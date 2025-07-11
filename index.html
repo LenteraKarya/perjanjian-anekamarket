@@ -95,7 +95,7 @@
             font-size: 15px;
         }
         
-        /* Parties Styles */
+        /* Parties Styles - Professional Aligned Layout */
         .parties {
             margin-bottom: 35px;
         }
@@ -111,9 +111,35 @@
         .party-title {
             font-weight: 700;
             text-decoration: underline;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             color: #222;
             font-size: 16px;
+        }
+        
+        .party-details {
+            width: 100%;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .detail-label {
+            width: 180px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .detail-value {
+            flex: 1;
+        }
+        
+        .form-input {
+            font-weight: 600;
+            color: #0066cc;
+            min-height: 1.2em;
+            display: inline-block;
         }
         
         /* Article Styles */
@@ -193,21 +219,26 @@
         
         .form-group {
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
         }
         
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #444;
-            font-size: 14px;
+        .form-group label {
+            width: 180px;
+            margin-bottom: 0;
+            margin-right: 10px;
+            text-align: right;
+        }
+        
+        .form-group input,
+        .form-group select {
+            flex: 1;
         }
         
         input[type="text"],
         input[type="date"],
         input[type="tel"],
         select {
-            width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 6px;
@@ -234,6 +265,7 @@
             gap: 15px;
             flex-wrap: wrap;
             margin-top: 25px;
+            justify-content: center;
         }
         
         button {
@@ -292,13 +324,8 @@
             color: #d9534f;
             font-size: 13px;
             margin-top: 5px;
+            margin-left: 190px;
             display: none;
-        }
-        
-        /* Form Input Display in Document */
-        .form-input {
-            font-weight: 600;
-            color: #0066cc;
         }
         
         /* Responsive Styles */
@@ -347,6 +374,31 @@
             
             .party {
                 padding: 12px;
+            }
+            
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .form-group label {
+                width: 100%;
+                text-align: left;
+                margin-bottom: 5px;
+                margin-right: 0;
+            }
+            
+            .error-message {
+                margin-left: 0;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                width: 100%;
+                margin-bottom: 2px;
             }
         }
         
@@ -439,13 +491,13 @@
             </div>
             
             <div class="form-group">
-                <label for="nik">NIK (16 digit angka):</label>
-                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}" placeholder="Masukkan 16 digit NIK">
+                <label for="nik">NIK:</label>
+                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}" placeholder="16 digit NIK">
                 <div id="nik_error" class="error-message">NIK harus 16 digit angka</div>
             </div>
             
             <div class="form-group">
-                <label for="alamat">Alamat Lengkap:</label>
+                <label for="alamat">Alamat:</label>
                 <input type="text" id="alamat" name="alamat" required placeholder="Alamat lengkap sesuai KTP">
                 <div id="alamat_error" class="error-message">Alamat harus diisi</div>
             </div>
@@ -524,7 +576,7 @@
                     <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/main/logo-lks.png" alt="Logo LKS" class="logo">
                     <div class="header-text">
                         <h2>LENTERA KARYA SITUBONDO</h2>
-                        <p>Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
+                        <p>Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
                         <p>Email: lenterakaryasitubondo@gmail.com | Telp: +62 878-6561-4222</p>
                         <p>Website: https://s.id/jualankita</p>
                     </div>
@@ -536,7 +588,7 @@
             </div>
             
             <div class="document-number">
-                Nomor: <span id="nomor_surat_display">............/............/SP3LA-LKS/2025</span>
+                Nomor: <span id="nomor_surat_display">............/............/SP3LA-LKS/VII/2025</span>
             </div>
             
             <div class="parties">
@@ -544,20 +596,54 @@
                 
                 <div class="party">
                     <div class="party-title">PIHAK PERTAMA:</div>
-                    <p>Nama Lengkap : <strong>MUHAMMAD SALAM</strong></p>
-                    <p>Jabatan : <strong>Founder Lentera Karya Situbondo</strong></p>
-                    <p>NIB : 1107250032367</p>
+                    <div class="party-details">
+                        <div class="detail-row">
+                            <div class="detail-label">Nama Lengkap:</div>
+                            <div class="detail-value"><strong>MUHAMMAD SALAM</strong></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Jabatan:</div>
+                            <div class="detail-value"><strong>Founder Lentera Karya Situbondo</strong></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Alamat:</div>
+                            <div class="detail-value">Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="party">
                     <div class="party-title">PIHAK KEDUA (Pemohon / Pengguna Layanan):</div>
-                    <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-input">..............................</span></p>
-                    <p>NIK : <span id="display_nik" class="form-input">..............................</span></p>
-                    <p>Alamat : <span id="display_alamat" class="form-input">..............................</span></p>
-                    <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-input">..............................</span></p>
-                    <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input">..............................</span></p>
-                    <p>Nama UMKM : <span id="display_nama_umkm" class="form-input">..............................</span></p>
-                    <p>Kategori Layanan : <span id="display_kategori_layanan" class="form-input">..............................</span></p>
+                    <div class="party-details">
+                        <div class="detail-row">
+                            <div class="detail-label">Nama Pemohon:</div>
+                            <div class="detail-value"><span id="display_nama_pemohon" class="form-input">..............................</span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">NIK:</div>
+                            <div class="detail-value"><span id="display_nik" class="form-input">..............................</span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Alamat:</div>
+                            <div class="detail-value"><span id="display_alamat" class="form-input">..............................</span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Nomor Telepon:</div>
+                            <div class="detail-value"><span id="display_nomor_telepon" class="form-input">..............................</span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">No. ID Pendaftaran:</div>
+                            <div class="detail-value"><span id="display_id_pendaftaran" class="form-input">..............................</span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Nama UMKM:</div>
+                            <div class="detail-value"><span id="display_nama_umkm" class="form-input">..............................</span></div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Kategori Layanan:</div>
+                            <div class="detail-value"><span id="display_kategori_layanan" class="form-input">..............................</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -625,7 +711,7 @@
             
             <div class="article">
                 <div class="article-title">PASAL 8 - PENUTUP</div>
-                <p>Demikian perjanjian ini dibuat dalam satu rangkap asli, ditandatangani secara elektronik menggunakan barcode yang memiliki kekuatan hukum yang sah, untuk digunakan sebagaimana mestinya.</p>
+                <p>Demikian perjanjian ini dibuat dalam satu rangkap asli yang bermaterai cukup dan memiliki kekuatan hukum yang sah, untuk digunakan sebagaimana mestinya.</p>
             </div>
             
             <div class="signature-area">
