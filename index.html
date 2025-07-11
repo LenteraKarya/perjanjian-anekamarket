@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Perjanjian Layanan LKS 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,12 +12,22 @@
             margin: 0;
             padding: 20px;
             color: #333;
+            position: relative;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 10%;
+            right: 10%;
+            opacity: 0.1;
+            z-index: -1;
+            width: 200px;
         }
         .form-container {
             max-width: 800px;
             margin: 0 auto;
             background-color: white;
             padding: 30px;
+            position: relative;
         }
         .header {
             display: flex;
@@ -93,6 +104,10 @@
             display: inline-block;
             width: 80%;
         }
+        .barcode {
+            margin-top: 20px;
+            height: 50px;
+        }
         .form-group {
             margin-bottom: 15px;
         }
@@ -130,10 +145,15 @@
             body {
                 padding: 0;
             }
+            .watermark {
+                opacity: 0.05;
+            }
         }
     </style>
 </head>
 <body>
+    <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png" alt="Watermark" class="watermark">
+
     <div class="form-container">
         <div class="no-print">
             <h1>Formulir Perjanjian Layanan LKS 2025</h1>
@@ -215,7 +235,6 @@
                     <p>NIK : <span id="display_nik" class="form-input">..............................</span></p>
                     <p>Alamat : <span id="display_alamat" class="form-input">..............................</span></p>
                     <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-input">..............................</span></p>
-                    <p>Tanggal Pendaftaran : <span id="display_tanggal_pendaftaran" class="form-input">..............................</span></p>
                     <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input">..............................</span></p>
                     <p>Nama UMKM : <span id="display_nama_umkm" class="form-input">..............................</span></p>
                     <p>Kategori Layanan : <span id="display_kategori_layanan" class="form-input">..............................</span></p>
@@ -237,16 +256,6 @@
                     <li>Fitur lain sesuai pengembangan platform</li>
                 </ul>
                 <p>2. PIHAK KEDUA berhak menggunakan fasilitas aplikasi sesuai ketentuan teknis dan kebijakan PIHAK PERTAMA.</p>
-            </div>
-            
-            <div class="header">
-                <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png" alt="Logo LKS" class="logo">
-                <div class="header-text">
-                    <h2>LENTERA KARYA SITUBONDO</h2>
-                    <p>Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
-                    <p>Email: lenterakaryasitubondo@gmail.com | Telp: +62 878-6561-4222</p>
-                    <p>Website: https://s.id/jualankita</p>
-                </div>
             </div>
             
             <div class="article">
@@ -272,16 +281,6 @@
                 </ul>
                 <p>5. Bertanggung jawab atas pengaduan, klaim, tuntutan, dan kerugian akibat transaksi, termasuk layanan transportasi, wisata, dan sewa hotel.</p>
                 <p>6. Wajib menjaga reputasi dan etika usaha dalam penggunaan aplikasi.</p>
-            </div>
-            
-            <div class="header">
-                <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png" alt="Logo LKS" class="logo">
-                <div class="header-text">
-                    <h2>LENTERA KARYA SITUBONDO</h2>
-                    <p>Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
-                    <p>Email: lenterakaryasitubondo@gmail.com | Telp: +62 878-6561-4222</p>
-                    <p>Website: https://s.id/jualankita</p>
-                </div>
             </div>
             
             <div class="article">
@@ -311,9 +310,11 @@
             
             <div class="signature-area">
                 <div class="signature-box">
-                    <p>Situbondo, Tanggal <span class="form-input">............</span> Bulan <span class="form-input">............</span> Tahun <span class="form-input">............</span></p>
+                    <p>Situbondo, <span id="display_tanggal_pendaftaran_full">..............................</span></p>
                     <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
                     <div class="signature-line"></div>
+                    <p><span id="display_nama_pemohon_sign">..............................</span></p>
+                    <svg id="barcode" class="barcode"></svg>
                 </div>
                 
                 <div class="signature-box">
@@ -339,16 +340,29 @@
             
             // Format date
             const formattedDate = formatDate(tanggalPendaftaran);
+            const fullDate = formatFullDate(tanggalPendaftaran);
             
             // Display values in the agreement
             document.getElementById('display_nama_pemohon').textContent = namaPemohon || "..............................";
             document.getElementById('display_nik').textContent = nik || "..............................";
             document.getElementById('display_alamat').textContent = alamat || "..............................";
             document.getElementById('display_nomor_telepon').textContent = nomorTelepon || "..............................";
-            document.getElementById('display_tanggal_pendaftaran').textContent = formattedDate || "..............................";
             document.getElementById('display_id_pendaftaran').textContent = idPendaftaran || "..............................";
             document.getElementById('display_nama_umkm').textContent = namaUmkm || "..............................";
             document.getElementById('display_kategori_layanan').textContent = kategoriLayanan || "..............................";
+            document.getElementById('display_tanggal_pendaftaran_full').textContent = fullDate || "..............................";
+            document.getElementById('display_nama_pemohon_sign').textContent = namaPemohon || "..............................";
+            
+            // Generate barcode
+            if (idPendaftaran) {
+                JsBarcode("#barcode", idPendaftaran, {
+                    format: "CODE128",
+                    lineColor: "#000",
+                    width: 2,
+                    height: 50,
+                    displayValue: true
+                });
+            }
             
             alert('Surat perjanjian telah di-generate. Silakan cetak dokumen.');
         }
@@ -360,6 +374,13 @@
             const month = date.getMonth() + 1;
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
+        }
+        
+        function formatFullDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return `Tanggal ${date.toLocaleDateString('id-ID', options)}`;
         }
     </script>
 </body>
