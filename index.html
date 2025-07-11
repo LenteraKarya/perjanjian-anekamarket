@@ -12,20 +12,22 @@
             padding: 20px;
             color: #333;
         }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+        }
         .header {
             display: flex;
             align-items: center;
             margin-bottom: 20px;
+            page-break-inside: avoid;
         }
         .logo {
             width: 100px;
             height: 70px;
             margin-right: 15px;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #ddd;
         }
         .header-text {
             flex: 1;
@@ -44,13 +46,16 @@
             text-decoration: underline;
             font-weight: bold;
             font-size: 18px;
+            page-break-inside: avoid;
         }
         .document-number {
             text-align: center;
             margin-bottom: 30px;
+            page-break-inside: avoid;
         }
         .parties {
             margin-bottom: 30px;
+            page-break-inside: avoid;
         }
         .party {
             margin-bottom: 20px;
@@ -59,15 +64,14 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
-        .form-field {
+        .form-input {
             display: inline-block;
             min-width: 300px;
-            border-bottom: 1px solid #333;
             margin-right: 10px;
-            padding-bottom: 2px;
         }
         .article {
             margin-bottom: 20px;
+            page-break-inside: avoid;
         }
         .article-title {
             font-weight: bold;
@@ -77,6 +81,7 @@
             margin-top: 50px;
             display: flex;
             justify-content: space-between;
+            page-break-inside: avoid;
         }
         .signature-box {
             width: 45%;
@@ -87,24 +92,6 @@
             border-top: 1px solid #333;
             display: inline-block;
             width: 80%;
-        }
-        .page-break {
-            page-break-after: always;
-        }
-        @media print {
-            body {
-                padding: 0;
-            }
-            .no-print {
-                display: none;
-            }
-        }
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         .form-group {
             margin-bottom: 15px;
@@ -128,9 +115,21 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #0055aa;
+        }
+        .no-print {
+            margin-bottom: 30px;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
         }
     </style>
 </head>
@@ -187,7 +186,7 @@
         
         <div id="agreement-document">
             <div class="header">
-                <div class="logo">[LOGO]</div>
+                <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png" alt="Logo LKS" class="logo">
                 <div class="header-text">
                     <h2>LENTERA KARYA SITUBONDO</h2>
                     <p>Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
@@ -212,14 +211,14 @@
                 
                 <div class="party">
                     <div class="party-title">PIHAK KEDUA (Pemohon / Pengguna Layanan):</div>
-                    <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-field">..............................</span></p>
-                    <p>NIK : <span id="display_nik" class="form-field">..............................</span></p>
-                    <p>Alamat : <span id="display_alamat" class="form-field">..............................</span></p>
-                    <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-field">..............................</span></p>
-                    <p>Tanggal Pendaftaran : <span id="display_tanggal_pendaftaran" class="form-field">..............................</span></p>
-                    <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-field">..............................</span></p>
-                    <p>Nama UMKM : <span id="display_nama_umkm" class="form-field">..............................</span></p>
-                    <p>Kategori Layanan : <span id="display_kategori_layanan" class="form-field">..............................</span></p>
+                    <p>Nama Pemohon : <span id="display_nama_pemohon" class="form-input">..............................</span></p>
+                    <p>NIK : <span id="display_nik" class="form-input">..............................</span></p>
+                    <p>Alamat : <span id="display_alamat" class="form-input">..............................</span></p>
+                    <p>Nomor Telepon : <span id="display_nomor_telepon" class="form-input">..............................</span></p>
+                    <p>Tanggal Pendaftaran : <span id="display_tanggal_pendaftaran" class="form-input">..............................</span></p>
+                    <p>No. ID Pendaftaran : <span id="display_id_pendaftaran" class="form-input">..............................</span></p>
+                    <p>Nama UMKM : <span id="display_nama_umkm" class="form-input">..............................</span></p>
+                    <p>Kategori Layanan : <span id="display_kategori_layanan" class="form-input">..............................</span></p>
                 </div>
             </div>
             
@@ -241,7 +240,7 @@
             </div>
             
             <div class="header">
-                <div class="logo">[LOGO]</div>
+                <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png" alt="Logo LKS" class="logo">
                 <div class="header-text">
                     <h2>LENTERA KARYA SITUBONDO</h2>
                     <p>Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
@@ -276,7 +275,7 @@
             </div>
             
             <div class="header">
-                <div class="logo">[LOGO]</div>
+                <img src="https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png" alt="Logo LKS" class="logo">
                 <div class="header-text">
                     <h2>LENTERA KARYA SITUBONDO</h2>
                     <p>Desa Wringin Anom, Kecamatan Panarukan, Kabupaten Situbondo, Jawa Timur</p>
@@ -312,7 +311,7 @@
             
             <div class="signature-area">
                 <div class="signature-box">
-                    <p>Situbondo, Tanggal <span class="form-field">............</span> Bulan <span class="form-field">............</span> Tahun <span class="form-field">............</span></p>
+                    <p>Situbondo, Tanggal <span class="form-input">............</span> Bulan <span class="form-input">............</span> Tahun <span class="form-input">............</span></p>
                     <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
                     <div class="signature-line"></div>
                 </div>
@@ -342,14 +341,14 @@
             const formattedDate = formatDate(tanggalPendaftaran);
             
             // Display values in the agreement
-            document.getElementById('display_nama_pemohon').textContent = namaPemohon;
-            document.getElementById('display_nik').textContent = nik;
-            document.getElementById('display_alamat').textContent = alamat;
-            document.getElementById('display_nomor_telepon').textContent = nomorTelepon;
-            document.getElementById('display_tanggal_pendaftaran').textContent = formattedDate;
-            document.getElementById('display_id_pendaftaran').textContent = idPendaftaran;
-            document.getElementById('display_nama_umkm').textContent = namaUmkm;
-            document.getElementById('display_kategori_layanan').textContent = kategoriLayanan;
+            document.getElementById('display_nama_pemohon').textContent = namaPemohon || "..............................";
+            document.getElementById('display_nik').textContent = nik || "..............................";
+            document.getElementById('display_alamat').textContent = alamat || "..............................";
+            document.getElementById('display_nomor_telepon').textContent = nomorTelepon || "..............................";
+            document.getElementById('display_tanggal_pendaftaran').textContent = formattedDate || "..............................";
+            document.getElementById('display_id_pendaftaran').textContent = idPendaftaran || "..............................";
+            document.getElementById('display_nama_umkm').textContent = namaUmkm || "..............................";
+            document.getElementById('display_kategori_layanan').textContent = kategoriLayanan || "..............................";
             
             alert('Surat perjanjian telah di-generate. Silakan cetak dokumen.');
         }
