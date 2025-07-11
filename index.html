@@ -17,7 +17,7 @@
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: #000; /* Warna font hitam untuk kejelasan */
             background-color: #f9f9f9;
             padding: 20px;
         }
@@ -56,6 +56,7 @@
         .header-text p {
             font-size: 13px;
             margin: 3px 0;
+            color: #000; /* Pastikan warna teks hitam */
         }
         
         /* Document Title Styles */
@@ -65,12 +66,14 @@
             font-weight: bold;
             text-decoration: underline;
             margin: 25px 0;
+            color: #000;
         }
         
         .document-number {
             text-align: center;
-            font-style: italic;
             margin-bottom: 30px;
+            font-style: normal; /* Tidak miring */
+            color: #000;
         }
         
         /* Parties Styles */
@@ -86,6 +89,7 @@
             font-weight: bold;
             text-decoration: underline;
             margin-bottom: 10px;
+            color: #000;
         }
         
         /* Article Styles */
@@ -96,6 +100,7 @@
         .article-title {
             font-weight: bold;
             margin-bottom: 10px;
+            color: #000;
         }
         
         /* Signature Area Styles */
@@ -112,6 +117,7 @@
         
         .signature-info {
             margin-bottom: 15px;
+            color: #000;
         }
         
         .qrcode-container {
@@ -127,6 +133,7 @@
             min-width: 200px;
             border-top: 1px solid #333;
             padding-top: 5px;
+            color: #000;
         }
         
         /* Form Styles */
@@ -163,6 +170,13 @@
             text-transform: uppercase;
         }
         
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
         button {
             background-color: #0066cc;
             color: white;
@@ -171,13 +185,25 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            margin-right: 10px;
-            margin-top: 15px;
             transition: background-color 0.3s;
+            flex: 1;
+            min-width: 200px;
         }
         
         button:hover {
             background-color: #0055aa;
+        }
+        
+        button.print {
+            background-color: #4CAF50;
+        }
+        
+        button.download {
+            background-color: #9C27B0;
+        }
+        
+        button.whatsapp {
+            background-color: #25D366;
         }
         
         .error-message {
@@ -196,11 +222,8 @@
             
             body {
                 padding: 0;
-                background-image: url('https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/main/logo-lks.png');
-                background-repeat: no-repeat;
-                background-position: center;
-                background-size: 400px;
-                opacity: 0.08;
+                background-image: none; /* Hapus watermark */
+                color: #000 !important; /* Pastikan warna hitam saat cetak */
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -217,6 +240,11 @@
             button {
                 display: none;
             }
+            
+            /* Pastikan semua teks hitam saat dicetak */
+            * {
+                color: #000 !important;
+            }
         }
     </style>
 </head>
@@ -225,7 +253,7 @@
         <!-- Form Input Section -->
         <div class="no-print">
             <h1 style="color: #0066cc; text-align: center; margin-bottom: 20px;">Formulir Perjanjian Layanan LKS 2025</h1>
-            <p style="text-align: center; margin-bottom: 20px;">Silakan isi formulir berikut untuk mendaftar sebagai pengguna layanan:</p>
+            <p style="text-align: center; margin-bottom: 20px; color: #000;">Silakan isi formulir berikut untuk mendaftar sebagai pengguna layanan:</p>
             
             <div class="form-group">
                 <label for="nama_pemohon">Nama Pemohon:</label>
@@ -235,7 +263,7 @@
             
             <div class="form-group">
                 <label for="nik">NIK (16 digit angka):</label>
-                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}" placeholder="Contoh: 3509131209880006">
+                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}" placeholder="Masukkan 16 digit NIK">
                 <div id="nik_error" class="error-message">NIK harus 16 digit angka</div>
             </div>
             
@@ -246,8 +274,8 @@
             </div>
             
             <div class="form-group">
-                <label for="nomor_telepon">Nomor Telepon (contoh: 081234567890):</label>
-                <input type="tel" id="nomor_telepon" name="nomor_telepon" required pattern="08\d{10,11}" maxlength="13" placeholder="Harus diawali 08">
+                <label for="nomor_telepon">Nomor Telepon:</label>
+                <input type="tel" id="nomor_telepon" name="nomor_telepon" required pattern="08\d{10,11}" maxlength="13" placeholder="Contoh: 081234567890">
                 <div id="nomor_telepon_error" class="error-message">Nomor harus diawali 08 dan 12-13 digit</div>
             </div>
             
@@ -281,9 +309,11 @@
                 <div id="kategori_layanan_error" class="error-message">Kategori harus dipilih</div>
             </div>
             
-            <div style="text-align: center; margin-top: 25px;">
-                <button onclick="validateAndGenerate()" style="background-color: #0066cc;">Generate Surat Perjanjian</button>
-                <button onclick="window.print()" style="background-color: #4CAF50;">Cetak Dokumen</button>
+            <div class="button-group">
+                <button onclick="validateAndGenerate()">Generate Surat Perjanjian</button>
+                <button onclick="window.print()" class="print">Cetak Dokumen</button>
+                <button onclick="downloadDocument()" class="download">Download PDF</button>
+                <button onclick="sendViaWhatsApp()" class="whatsapp">Kirim via WhatsApp</button>
             </div>
         </div>
         
@@ -522,6 +552,7 @@
             
             if (isValid) {
                 generateAgreement();
+                alert('Surat perjanjian telah di-generate. Silakan cetak, download, atau kirim via WhatsApp.');
             } else {
                 alert('Silakan periksa kembali form Anda. Ada data yang belum valid.');
             }
@@ -559,8 +590,6 @@
             
             generateQRCode('qrcode_pihak_pertama', 
                          `PERUSAHAAN:LENTERA KARYA|PENANDATANGAN:MUHAMMAD SALAM|JABATAN:FOUNDER|TGL:07/07/2025`);
-            
-            alert('Surat perjanjian telah di-generate. Silakan cetak dokumen.');
         }
 
         function generateQRCode(elementId, data) {
@@ -603,6 +632,34 @@
         document.getElementById('nama_umkm').addEventListener('input', function() {
             this.value = this.value.toUpperCase();
         });
+
+        // Download PDF function
+        function downloadDocument() {
+            // First generate the agreement if not already done
+            validateAndGenerate();
+            
+            // Use html2pdf library (you need to include it in your project)
+            // For simplicity, we'll use window.print() as fallback
+            alert('Fitur download akan menyimpan dokumen sebagai PDF. Pastikan Anda telah meng-generate dokumen terlebih dahulu.');
+            window.print();
+        }
+
+        // Send via WhatsApp function
+        function sendViaWhatsApp() {
+            // First generate the agreement if not already done
+            validateAndGenerate();
+            
+            const namaPemohon = document.getElementById('nama_pemohon').value || 'Nama Pemohon';
+            const idPendaftaran = document.getElementById('id_pendaftaran').value || 'ID Pendaftaran';
+            
+            const message = `Berikut tanda bukti pendaftaran saya dan bukti perjanjiannya:\n\nNama: ${namaPemohon}\nID Pendaftaran: ${idPendaftaran}\n\nSilakan lihat dokumen terlampir.`;
+            
+            // WhatsApp API URL
+            const whatsappUrl = `https://wa.me/6287865614222?text=${encodeURIComponent(message)}`;
+            
+            // Open in new tab
+            window.open(whatsappUrl, '_blank');
+        }
     </script>
 </body>
 </html>
