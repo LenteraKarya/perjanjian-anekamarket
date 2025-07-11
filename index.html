@@ -13,12 +13,6 @@
             padding: 20px;
             color: #333;
             position: relative;
-            background-image: url('https://raw.githubusercontent.com/LenteraKarya/daftar-member-jualan-kita/refs/heads/main/logo-lks.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 300px;
-            background-attachment: fixed;
-            opacity: 0.95;
         }
         .form-container {
             max-width: 800px;
@@ -99,10 +93,8 @@
             text-align: center;
         }
         .signature-name {
-            margin-top: 60px;
+            margin-top: 10px;
             font-weight: bold;
-            border-top: 1px solid #333;
-            padding-top: 5px;
             display: inline-block;
             min-width: 200px;
         }
@@ -156,8 +148,9 @@
             display: none;
         }
         @media print {
-            .no-print {
-                display: none;
+            @page {
+                size: A4;
+                margin: 1cm;
             }
             body {
                 padding: 0;
@@ -165,11 +158,16 @@
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: 300px;
-                background-attachment: fixed;
                 opacity: 0.1;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             .form-container {
                 box-shadow: none;
+                border: none;
+            }
+            .no-print {
+                display: none;
             }
         }
     </style>
@@ -348,8 +346,8 @@
                     <div class="signature-info">
                         <p>Situbondo, <span id="display_tanggal_pendaftaran_full">..............................</span></p>
                     </div>
-                    <div id="qrcode_pihak_kedua" class="qrcode-container"></div>
                     <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
+                    <div id="qrcode_pihak_kedua" class="qrcode-container"></div>
                     <div class="signature-name">
                         <span id="display_nama_pemohon_sign">..............................</span>
                     </div>
@@ -359,8 +357,8 @@
                     <div class="signature-info">
                         <p>Situbondo, <span id="display_tanggal_pihak_pertama">07 Juli 2025</span></p>
                     </div>
-                    <div id="qrcode_pihak_pertama" class="qrcode-container"></div>
                     <p>PIHAK PERTAMA<br>Founder Lentera Karya Situbondo</p>
+                    <div id="qrcode_pihak_pertama" class="qrcode-container"></div>
                     <div class="signature-name">
                         Muhammad Salam
                     </div>
