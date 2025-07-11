@@ -35,9 +35,9 @@
             page-break-inside: avoid;
         }
         .logo {
-            width: 100px;
-            height: 70px;
-            margin-right: 15px;
+            width: 120px;
+            height: 90px;
+            margin-right: 20px;
         }
         .header-text {
             flex: 1;
@@ -45,6 +45,7 @@
         .header-text h2 {
             margin: 0;
             color: #0066cc;
+            font-size: 22px;
         }
         .header-text p {
             margin: 5px 0;
@@ -98,11 +99,18 @@
             text-align: center;
         }
         .signature-name {
-            margin-top: 10px;
+            margin-top: 60px;
             font-weight: bold;
+            border-top: 1px solid #333;
+            padding-top: 5px;
+            display: inline-block;
+            min-width: 200px;
+        }
+        .signature-info {
+            margin-bottom: 10px;
         }
         .qrcode-container {
-            margin: 0 auto 10px;
+            margin: 10px auto;
             width: 100px;
             height: 100px;
         }
@@ -114,11 +122,15 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"], input[type="date"], input[type="tel"] {
+        input[type="text"], input[type="date"], input[type="tel"], select {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input.uppercase {
+            text-transform: uppercase;
         }
         button {
             background-color: #0066cc;
@@ -129,12 +141,19 @@
             cursor: pointer;
             font-size: 16px;
             margin-right: 10px;
+            margin-top: 10px;
         }
         button:hover {
             background-color: #0055aa;
         }
         .no-print {
             margin-bottom: 30px;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
         }
         @media print {
             .no-print {
@@ -163,45 +182,59 @@
             
             <div class="form-group">
                 <label for="nama_pemohon">Nama Pemohon:</label>
-                <input type="text" id="nama_pemohon" name="nama_pemohon" required>
+                <input type="text" id="nama_pemohon" name="nama_pemohon" class="uppercase" required>
+                <div id="nama_pemohon_error" class="error-message">Nama harus diisi</div>
             </div>
             
             <div class="form-group">
                 <label for="nik">NIK:</label>
-                <input type="text" id="nik" name="nik" required>
+                <input type="text" id="nik" name="nik" required maxlength="16" pattern="\d{16}">
+                <div id="nik_error" class="error-message">NIK harus 16 digit angka</div>
             </div>
             
             <div class="form-group">
                 <label for="alamat">Alamat:</label>
                 <input type="text" id="alamat" name="alamat" required>
+                <div id="alamat_error" class="error-message">Alamat harus diisi</div>
             </div>
             
             <div class="form-group">
                 <label for="nomor_telepon">Nomor Telepon:</label>
-                <input type="tel" id="nomor_telepon" name="nomor_telepon" required>
+                <input type="tel" id="nomor_telepon" name="nomor_telepon" required pattern="08\d{10,11}" maxlength="13">
+                <div id="nomor_telepon_error" class="error-message">Nomor harus diawali 08 dan 12-13 digit</div>
             </div>
             
             <div class="form-group">
                 <label for="tanggal_pendaftaran">Tanggal Pendaftaran:</label>
                 <input type="date" id="tanggal_pendaftaran" name="tanggal_pendaftaran" required>
+                <div id="tanggal_pendaftaran_error" class="error-message">Tanggal harus diisi</div>
             </div>
             
             <div class="form-group">
                 <label for="id_pendaftaran">No. ID Pendaftaran:</label>
-                <input type="text" id="id_pendaftaran" name="id_pendaftaran" required>
+                <input type="text" id="id_pendaftaran" name="id_pendaftaran" readonly>
             </div>
             
             <div class="form-group">
                 <label for="nama_umkm">Nama UMKM:</label>
-                <input type="text" id="nama_umkm" name="nama_umkm" required>
+                <input type="text" id="nama_umkm" name="nama_umkm" class="uppercase" required>
+                <div id="nama_umkm_error" class="error-message">Nama UMKM harus diisi</div>
             </div>
             
             <div class="form-group">
                 <label for="kategori_layanan">Kategori Layanan:</label>
-                <input type="text" id="kategori_layanan" name="kategori_layanan" required>
+                <select id="kategori_layanan" name="kategori_layanan" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="Layanan UMKM">Layanan UMKM</option>
+                    <option value="Layanan Ojek Online">Layanan Ojek Online</option>
+                    <option value="Layanan Jasa">Layanan Jasa</option>
+                    <option value="Layanan Sewa Hotel">Layanan Sewa Hotel</option>
+                    <option value="Layanan Wisata">Layanan Wisata</option>
+                </select>
+                <div id="kategori_layanan_error" class="error-message">Kategori harus dipilih</div>
             </div>
             
-            <button onclick="generateAgreement()">Generate Surat Perjanjian</button>
+            <button onclick="validateAndGenerate()">Generate Surat Perjanjian</button>
             <button onclick="window.print()" style="background-color: #4CAF50;">Cetak Dokumen</button>
             <hr>
         </div>
@@ -312,27 +345,135 @@
             
             <div class="signature-area">
                 <div class="signature-box">
+                    <div class="signature-info">
+                        <p>Situbondo, <span id="display_tanggal_pendaftaran_full">..............................</span></p>
+                    </div>
                     <div id="qrcode_pihak_kedua" class="qrcode-container"></div>
                     <p>PIHAK KEDUA<br>Pemohon/Pengguna Layanan</p>
                     <div class="signature-name">
                         <span id="display_nama_pemohon_sign">..............................</span>
                     </div>
-                    <p>Situbondo, <span id="display_tanggal_pendaftaran_full">..............................</span></p>
                 </div>
                 
                 <div class="signature-box">
+                    <div class="signature-info">
+                        <p>Situbondo, <span id="display_tanggal_pihak_pertama">07 Juli 2025</span></p>
+                    </div>
                     <div id="qrcode_pihak_pertama" class="qrcode-container"></div>
                     <p>PIHAK PERTAMA<br>Founder Lentera Karya Situbondo</p>
                     <div class="signature-name">
                         Muhammad Salam
                     </div>
-                    <p>Situbondo, <span id="display_tanggal_pihak_pertama">07 Juli 2025</span></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Generate random ID function
+        function generateRandomID() {
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = 'LKS/JK-';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Auto generate ID when required fields are filled
+        function autoGenerateID() {
+            const namaPemohon = document.getElementById('nama_pemohon').value;
+            const nik = document.getElementById('nik').value;
+            const alamat = document.getElementById('alamat').value;
+            const nomorTelepon = document.getElementById('nomor_telepon').value;
+            const tanggalPendaftaran = document.getElementById('tanggal_pendaftaran').value;
+            
+            if (namaPemohon && nik && alamat && nomorTelepon && tanggalPendaftaran) {
+                document.getElementById('id_pendaftaran').value = generateRandomID();
+            }
+        }
+
+        // Add event listeners for auto-generate ID
+        document.getElementById('nama_pemohon').addEventListener('input', autoGenerateID);
+        document.getElementById('nik').addEventListener('input', autoGenerateID);
+        document.getElementById('alamat').addEventListener('input', autoGenerateID);
+        document.getElementById('nomor_telepon').addEventListener('input', autoGenerateID);
+        document.getElementById('tanggal_pendaftaran').addEventListener('change', autoGenerateID);
+
+        // Validate form before generating agreement
+        function validateAndGenerate() {
+            let isValid = true;
+            
+            // Validate Nama Pemohon
+            const namaPemohon = document.getElementById('nama_pemohon').value;
+            if (!namaPemohon) {
+                document.getElementById('nama_pemohon_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nama_pemohon_error').style.display = 'none';
+            }
+            
+            // Validate NIK
+            const nik = document.getElementById('nik').value;
+            if (!nik || !/^\d{16}$/.test(nik)) {
+                document.getElementById('nik_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nik_error').style.display = 'none';
+            }
+            
+            // Validate Alamat
+            const alamat = document.getElementById('alamat').value;
+            if (!alamat) {
+                document.getElementById('alamat_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('alamat_error').style.display = 'none';
+            }
+            
+            // Validate Nomor Telepon
+            const nomorTelepon = document.getElementById('nomor_telepon').value;
+            if (!nomorTelepon || !/^08\d{10,11}$/.test(nomorTelepon)) {
+                document.getElementById('nomor_telepon_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nomor_telepon_error').style.display = 'none';
+            }
+            
+            // Validate Tanggal Pendaftaran
+            const tanggalPendaftaran = document.getElementById('tanggal_pendaftaran').value;
+            if (!tanggalPendaftaran) {
+                document.getElementById('tanggal_pendaftaran_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('tanggal_pendaftaran_error').style.display = 'none';
+            }
+            
+            // Validate Nama UMKM
+            const namaUmkm = document.getElementById('nama_umkm').value;
+            if (!namaUmkm) {
+                document.getElementById('nama_umkm_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nama_umkm_error').style.display = 'none';
+            }
+            
+            // Validate Kategori Layanan
+            const kategoriLayanan = document.getElementById('kategori_layanan').value;
+            if (!kategoriLayanan) {
+                document.getElementById('kategori_layanan_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('kategori_layanan_error').style.display = 'none';
+            }
+            
+            if (isValid) {
+                generateAgreement();
+            } else {
+                alert('Silakan periksa kembali form Anda. Ada data yang belum valid.');
+            }
+        }
+
         function generateAgreement() {
             // Get form values
             const namaPemohon = document.getElementById('nama_pemohon').value;
@@ -400,6 +541,15 @@
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             return `Tanggal ${date.toLocaleDateString('id-ID', options)}`;
         }
+
+        // Force uppercase for specific fields
+        document.getElementById('nama_pemohon').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+        
+        document.getElementById('nama_umkm').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
     </script>
 </body>
 </html>
